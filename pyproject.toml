@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edtsim"
+version = "0.1.0"
+description = "Electrodynamic-tether CubeSat simulator: inertia, tether dynamics, and (eventually) coupled attitude dynamics."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.22"]
+
+[project.optional-dependencies]
+# Stage 3: lumped-mass tether solver and OML current profile
+tether = ["scipy>=1.9"]
+# Stage 2: geomagnetic field + ECI<->ECEF transforms (heavy; only needed to *generate* environment tables)
+environment = ["astropy>=5.0", "wmm-calculator"]
+# Stage 4: plotting / animation
+viz = ["matplotlib>=3.5"]
+dev = ["pytest>=7"]
+all = ["scipy>=1.9", "astropy>=5.0", "wmm-calculator", "matplotlib>=3.5", "pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

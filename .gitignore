@@ -218,3 +218,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# MATLAB export files (keep small test fixtures and reference runs)
+*.mat
+!tests/fixtures/*.mat
+!legacy/runs/**/*.mat
