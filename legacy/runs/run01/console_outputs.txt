@@ -1,0 +1,132 @@
+=== Satellite MOI Tool (configs 1-3; config 2 is -z_B; config 3 uses WMM+astropy; chunked Radau) ===
+All inertias are about BUS COM.
+
+Enter BUS parameters (uniform rectangular box):
+  Bus mass m_b [kg]:  4
+  Bus size a along x [m]:  0.1
+  Bus size b along y [m]:  0.1
+  Bus size c along z [m]:  0.3
+
+(1) COILED / STOWED tether as annular cylinder (spool) + stowed point mass:
+  Spool (stowed tether) mass m_t(stowed) [kg]:  0.1
+  Spool inner radius r_i [m]:  0.01
+  Spool outer radius r_o [m]:  0.04
+  Spool thickness/height h [m]:  0.02
+  Spool axis direction in BUS frame [sx sy sz]:  0 0 1
+  Spool COM position wrt bus COM in BUS frame [x y z] [m]:  0 0 0
+  Stowed end point mass m_p [kg]:  0.2
+  End-mass position mode: [k]=known, [r]=random-in-spool :  k
+  Enter end mass position in BUS frame wrt bus COM [x y z] [m]:  0.025 0 0
+
+Config (1) MOI (BODY): Bus + Spool + Stowed EndMass (kg*m^2):
+[[0.033379 0.       0.      ]
+ [0.       0.033504 0.      ]
+ [0.       0.       0.006877]]
+
+(2) FULLY EXTENDED tether aligned with -z_B (rod + point mass):
+  Tether length L [m]:  10
+  Tether mass m_t(deployed) [kg]:  0.1
+  Attachment point in BUS frame wrt bus COM [x y z] [m]:  0 0 -0.15
+  End point mass m_p [kg]:  0.2
+
+Config (2) MOI (BODY): Bus + DeployedRod(-z_B) + EndMass (kg*m^2):
+[[24.123417  0.        0.      ]
+ [ 0.       24.123417  0.      ]
+ [ 0.        0.        0.006667]]
+
+  Geometry vectors (relative to bus COM, in BUS frame at t=0):
+  r_a^B0 (attachment) = [ 0.    0.   -0.15]
+  r_p^B0 (point mass) = [  0.     0.   -10.15]
+
+(3) BENT TETHER CONFIG (orbit + current + WMM2025 + astropy; stiff):
+  Epoch UTC:  2026-10-21T12:00:00
+
+  Orbit (circular):
+  Altitude above Earth [m]:  400000
+  Inclination [deg]:  51.6
+  RAAN [deg]:  0
+  Initial true anomaly nu0 [deg]:  0
+  Orbit period ~ 5553.624 s
+
+  Bus attitude during simulation:
+  [i]=identity, [e]=constant ZYX euler (deg):  i
+
+  Current model:
+  Bare tether current-profile inputs:
+  Bias / supply voltage V_bias [V]:  50
+  Cathode drop V_cath [V]:  10
+  Plasma density N_inf [1/m^3]:  5e11
+  Tether diameter d [m]:  0.001
+  Conductivity sigma [S/m]:  3.5e7
+  Bare fraction [0..1]:  1
+  Scale current with Em(t) along orbit? [y/n]:  y
+  Current turn-on time constant tau [s]:  1
+
+  Tether dynamics discretization:
+  Number of segments N_seg:  5
+  Axial stiffness EA [N]:  5000
+  Axial damping c [N*s/m]:  10
+  Tension-only (no compression) [y/n]:  y
+
+  Time settings:
+  t_final [s]:  30
+  n_output samples:  61
+
+  WMM precompute sampling:
+  B_samples:  20
+
+  Settle detection (relative to bus COM translation):
+  v_tol [m/s]:  0.001
+  hold_time [s]:  5
+
+  Initial tether direction in inertial:
+  [z]=use -z_I, [v]=enter vector:  z
+
+  Running bent-tether simulation ...
+
+  Precomputing WMM B-field along orbit at BUS COM (this is the heavy part)...
+    WMM precompute 0/20
+    WMM precompute 2/20
+    WMM precompute 4/20
+    WMM precompute 6/20
+    WMM precompute 8/20
+    WMM precompute 10/20
+    WMM precompute 12/20
+    WMM precompute 14/20
+    WMM precompute 16/20
+    WMM precompute 18/20
+    WMM precompute 19/20
+  B-field precompute finished in 7.31 s
+     precomputed_to_s = 5553.624
+     B_grid_shape     = (20, 3)
+     sample B(0) [T]  = [0.000008 0.000002 0.00003 ]
+  stiffness: N_seg=5, L=10 m, l0=2 m, k=2.5e+03 N/m, m_node=0.025 kg, T_fast≈1.987e-02 s, mass_scale=6.33
+  current profile: Em_ref≈1.605e-01 V/m, I_mid range≈[0.000295, 0.00267] A
+  init sanity: |r_com0|=6.778e+06 m, |r_attach_rel0|=1.500e-01 m, seg_len min/mean/max=2/2/2 m
+
+  Starting solve_ivp (stiff; chunked; method=BDF)...
+    segment 0: integrating [0.00, 30.00] s (samples=61)...
+  solve_ivp finished in 17.47 s (segments=1, Nt=61)
+  exported tether node history for MATLAB -> tether_nodes.mat  (r_nodes shape=(61, 6, 3))
+
+  Settle status: NOT settled (using t_final)
+  t_out = 30.000000 s
+  Bus COM (ECI) at t_out: [6774233.196833  142871.801788  180259.351885] [m]
+  Solver method: BDF
+
+Config (3) I_bus (INERTIAL) (kg*m^2):
+[[0.033333 0.       0.      ]
+ [0.       0.033333 0.      ]
+ [0.       0.       0.006667]]
+
+Config (3) I_tether+end (INERTIAL) (kg*m^2):
+[[ 0.006754 -0.       -0.000073]
+ [-0.        0.006754 -0.000004]
+ [-0.000073 -0.000004  0.000001]]
+
+Config (3) I_total (INERTIAL) about bus COM (kg*m^2):
+[[ 0.040087 -0.       -0.000073]
+ [-0.        0.040088 -0.000004]
+ [-0.000073 -0.000004  0.006667]]
+
+Done.
