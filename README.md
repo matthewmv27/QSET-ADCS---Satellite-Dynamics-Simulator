@@ -64,4 +64,4 @@ docs/                   Conventions, roadmap and baseline/review documentation
 4. Keep optional heavy dependencies out of the `core` and `inertia` imports.
 5. Add focused unit tests and a runnable example when introducing a new subpackage.
 
-The development plan is in [docs/roadmap.md](docs/roadmap.md). Issues concerning legacy tether-force behavior, mass scaling, current direction and two-way coupling are **out of scope for M0** and must be resolved before treating the full simulation as validated.
+The M1 foundation defines shared coordinate-frame conventions, physical state structures, and module interfaces. See docs/interfaces.md and docs/m1-interface-spec.md. Run python examples/interfaces_quickstart.py to demonstrate the new interfaces.

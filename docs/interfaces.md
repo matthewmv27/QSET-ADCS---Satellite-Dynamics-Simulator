@@ -1,62 +1,141 @@
-# Interfaces and conventions
+# Shared interfaces and conventions (M1)
 
-This is the contract between subpackages. If code and this file disagree, fix one of them in the same commit.
+**Status:** M1 contract for future models. The packaged production code currently
+implements `core` and `inertia`; `attitude`, `environment`, `edt_current`,
+`tether`, and `coupling` are not yet implemented as independent production models.
+See `docs/m1-interface-spec.md` for the detailed integration data flow.
 
-## 1. Conventions
+These conventions define data exchange, not a validated physical model. If new
+code disagrees with this contract, resolve the discrepancy in a reviewed PR.
 
-| Topic | Convention |
+## 1. Frames, rotations, and units
+
+| Item | Contract |
 |---|---|
-| Units | SI everywhere internally (m, kg, s, rad, A, T, N). Degrees only at user-input/display boundaries. |
-| Frames | **I** = Earth-centred inertial (GCRS). **B** = body frame, origin at the **bus COM**. |
-| Attitude | `R_IB` maps body vectors to inertial: `v_I = R_IB @ v_B`. |
-| Euler angles | Intrinsic ZYX: `R_IB = Rz(yaw) @ Ry(pitch) @ Rx(roll)`. |
-| Inertia tensors | About the **bus COM**, in the **body frame**, unless the name ends in `_I` (inertial axes). For the coupled model use `shift_inertia_to_com` to move to the system COM. |
-| Vectors / arrays | A single vector is shape `(3,)`; a set of N is `(N, 3)`; a time history is `(Nt, ...)`. |
-| Deployed tether | Config 2 lies along `-z_B` from the attachment point `attach_B`. |
-| Variable suffixes | `_B` body frame, `_I` inertial frame, `_com` about own COM. |
+| Units | SI throughout: m, kg, s, rad, N, N·m, A, T, kg·m²; model-specific plasma units must be converted at boundaries |
+| `I` inertial frame | Earth-centered GCRS axes for the orbital/environment interface. Do not silently mix another ECI convention |
+| `B` bus body frame | Right-handed orthogonal axes, origin **at rigid bus COM**; assumed fixed to the rigid bus |
+| `E` Earth-fixed frame | For magnetic/geographic models only; transform to `I` before exporting to dynamics |
+| `R_IB` | Active rotation from body to inertial: `v_I = R_IB @ v_B`, `R_BI = R_IB.T` |
+| `q_IB` | Hamilton **scalar-first** quaternion `(w, x, y, z)`, unit length, represents `B -> I` |
+| Euler input | Intrinsic ZYX: `R_IB = Rz(yaw) @ Ry(pitch) @ Rx(roll)`; all angles in radians |
+| `omega_B` | Bus angular velocity relative to inertial, expressed in body coordinates, rad/s |
+| Quaternion rate | `dq_IB/dt = 0.5 * (q_IB ⊗ [0, omega_B])` |
+| `t_s` | Seconds elapsed since mission simulation start. The UTC epoch is separate metadata |
+| Single vectors | `(3,)` for position, velocity, force; single quaternion `(4,)` |
+| Node arrays | `(N_nodes, 3)`; time histories `(Nt, ...)`; node zero is bus attachment |
+| Axis suffixes | `_B` in body coordinates, `_I` in inertial; no unsuffixed vector fields in public model contracts |
 
-## 2. Dependency rule (enforced by `tests/test_architecture.py`)
+A quaternion and its negative represent the same orientation. `BusState` checks
+that `q_IB` is unit length; normalization is **explicit** (`normalize_quaternion`)
+rather than silently changing a state. `R_IB` is not a synonym for a generic ECI
+coordinate rotation.
 
-```
-core  <-  inertia  <-  tether  <-  coupled
-core  <-  environment  <-----------^
-core  <-  edt_current  <-----------^
-core  <-  viz
-```
+`edtsim.core.rotations` provides legacy Euler matrix utilities;
+`edtsim.core.frames` adds quaternion and attachment helpers consistent with those matrices.
 
-A subpackage may import only from the ones to its left. `tether` does **not** import `environment` or
-`edt_current`: it receives `B(t)` and `I(s, t)` as arguments (arrays or callables). That keeps astropy/WMM out of the
-solver and lets every piece be tested with synthetic inputs.
+## 2. Mass-property frames and reference points
 
-## 3. Results file (DRAFT, finalised in Stage 3)
+- The existing `moi_config_1_coiled` and `moi_config_2_extended_on_minus_z`
+  return tensors **about the bus COM, in body axes**. These are *assembly*
+  inertias about a reference point, not automatically rigid-bus inertias.
+- A new `MassProperties` snapshot contains total mass, `com_B` (assembly COM
+  relative to **bus COM**) and `inertia_com_B` (assembly tensor **about the
+  assembly COM**, expressed in body axes).
+- The rigid attitude solver must use the rigid **bus** inertia about the bus
+  COM. A flexible tether has separate positions, velocities, and forces; its
+  contribution to momentum enters through coupling, not by blindly replacing
+  bus inertia with a time-dependent assembly inertia.
+- Treat a rigidly deployed tether as part of a *single rigid body* only when
+  that assumption is explicitly part of the model and documented.
+- `inertia_from_particles(r, m, r_ref)` requires all positions and the reference
+  point in the same axes; the function itself has no frame metadata.
 
-Written from the legacy v2 exporter's fields; **shapes and units to be confirmed against the running code** in Stage 3.
+## 3. Shared M1 data snapshots
 
-| Field | Shape | Meaning |
+| Class | Fields | Meaning |
 |---|---|---|
-| `t` | `(Nt,)` | time [s] (pseudo-time if `mass_scale != 1`, see `meta`) |
-| `r_nodes` | `(Nt, N_nodes, 3)` | tether node positions, inertial frame [m] |
-| `x_bus` | `(Nt, 3)` | bus COM position, inertial frame [m] |
-| `fL_seg` | `(Nt, N_seg, 3)` | Lorentz force on each segment [N] |
-| `I_seg` | `(Nt, N_seg)` | current in each segment [A] |
-| `B_eci` | `(Nt, 3)` | geomagnetic field at the bus [T, confirm] |
+| `BusState` | `r_I`, `v_I`, `q_IB`, `omega_B` | Bus COM state, inertial position/velocity; body quaternion/rate |
+| `AttachmentState` | `r_I`, `v_I` | Fixed attachment position and velocity in inertial axes |
+| `AttachmentReaction` | `force_on_bus_I`, `couple_on_bus_I` | Tether force (and optional free couple) **on bus**, inertial axes |
+| `MassProperties` | `mass_kg`, `com_B`, `inertia_com_B` | Combined rigid/assembly mass properties and explicit reference |
+| `TetherState` | `r_nodes_I`, `v_nodes_I` | `(N,3)` positions/velocities in inertial axes, node 0 attached |
+| `EnvironmentSample` | `t_s`, `position_I`, `B_I`, `plasma_velocity_I` | Field in tesla; plasma velocity in m/s, inertial |
 
-Planned additions: `r_rel = r_nodes - x_bus` (better for plotting), `R_IB(t)`, bus dimensions, tension at the
-attachment node (the force the bus actually feels), and a `meta` block (schema version, units, frame tags, epoch,
-orbit, tether parameters, `mass_scale`, code version). Canonical format: `.npz` (numpy only); `.mat` is an optional
-adapter written with scipy for MATLAB users.
+All are validated data containers, **not solvers**. Arrays are copied and marked
+read-only. They can be converted to floating-point arrays inside an integrator,
+which manages its own state representation.
 
-## 4. Legacy name map
+## 4. Mechanical attachment interface
 
-| Legacy notebook name | New location |
-|---|---|
-| `hat`, `unit`, `Rx`, `Ry`, `Rz`, `euler_zyx_to_R`, `rotation_matrix_from_a_to_b` | `edtsim.core` |
-| `BusParams`, `SpoolParams`, `TetherParams`, `PointMassParams` | `edtsim.core` (now validated) |
-| `parallel_axis_shift`, `point_mass_inertia_about_origin`, `box_/annular_cylinder_/slender_rod_inertia_about_com`, `inertia_body_to_inertial` | `edtsim.inertia` |
-| `moi_config_1_coiled`, `moi_config_2_extended_on_minus_z` | `edtsim.inertia` (config 2 returns a `NamedTuple`) |
-| `sample_point_in_annular_cylinder` | `edtsim.inertia` |
-| `compute_inertia_from_particles_about_bus_com_in_inertial` | `edtsim.inertia.inertia_from_particles(r, m, r_ref)` (reference point is explicit) |
-| orbit, WMM, astropy transforms, B-grid | `edtsim.environment` (Stage 2) |
-| OML current-profile solver | `edtsim.edt_current` (Stage 2) |
-| tether chain RHS, solver, settle detection | `edtsim.tether` (Stage 3) |
-| `input()` wizard `main()` | config files + CLI (later) |
+Assume a point fixed on the bus at `attach_B` [m] relative to bus COM.
+
+```text
+r_attach_I = r_bus_I + R_IB @ attach_B
+v_attach_I = v_bus_I + R_IB @ cross(omega_B, attach_B)
+```
+
+A rotating/reeling attachment needs an extra relative-velocity term; this
+fixed-point interface is not sufficient for deployment out of a moving spool.
+
+The tether returns its reaction **ON THE BUS** as force `F_bus_I` and optional
+free couple `M_bus_I`; converting to bus force and torque about bus COM gives:
+
+```text
+F_bus_B = R_IB.T @ F_bus_I
+Tau_bus_B = cross(attach_B, F_bus_B) + R_IB.T @ M_bus_I
+```
+
+The tether experiences the **opposite** attachment reaction. Lorentz forces
+are applied to tether segments; do not apply the full distributed force to the
+bus *and* its mechanical reaction as two separate inputs.
+
+## 5. Future environment, current, and tether contracts
+
+- **Environment:** sampled `t_s -> B_I` and plasma velocity at each required
+  evaluation location; specify model version, UTC start epoch and valid time
+  domain. Reject or explicitly regenerate out-of-range field requests, never
+  silently clamp the last sample.
+- **EDT current:** define geometric arc length `s_m` **from the bus outward**;
+  segment `i` goes from node `i` to node `i+1` in that direction. **Signed
+  conventional current** is positive along increasing `s_m`. This is a
+  software sign convention, not a claim that the actual physical current flows
+  outward. Validate cathode polarity, collection boundary conditions and OML
+  integration direction before implementing the adapter.
+- **Lorentz load:** `dF_I = I_signed * (dell_I × B_I)` applied per segment,
+  with `dell_I = r_(i+1)_I - r_i_I` in the positive arc-length direction.
+  Segment currents are in A, fields in T, and force in N.
+- **Tether:** node zero coincides with the attachment position/velocity for
+  the fixed-point interface; the end mass is node `-1` if the chain model
+  uses that discretization. A future tether package must document its mass
+  lumping, elasticity, and solver modes.
+
+## 6. Dependency boundary
+
+```text
+  core <--- inertia            core <--- attitude
+    ^           ^                ^
+    |           |                |
+  environment   tether       future coupling orchestrator
+  edt_current   (receives field/current as inputs; no WMM/Astropy imports)
+
+  coupling may depend on core, inertia, attitude, environment, edt_current, tether
+  viz reads recorded result data, not private solver internals
+```
+
+`tests/test_architecture.py` enforces static package-import boundaries. Heavy
+WMM/Astropy dependencies must not be introduced into core, inertia or attitude.
+
+## 7. Trajectory records (provisional; NOT an implemented exporter)
+
+Target `.npz` format, with a `schema_version`, epoch, simulation units, frames,
+reference-point metadata, code version, model parameters, and solver options.
+Suggested arrays: `t_s (Nt,)`, `r_bus_I (Nt,3)`, `v_bus_I (Nt,3)`,
+`q_IB (Nt,4)`, `omega_B (Nt,3)`, `r_nodes_I (Nt,N,3)`,
+`v_nodes_I (Nt,N,3)`, `current_seg_A (Nt,N-1)`,
+`force_lorentz_seg_I (Nt,N-1,3)`, `force_attach_on_bus_I (Nt,3)`.
+
+Arrays may be absent for simulations that do not include a subsystem; metadata
+must tell readers which fields are included. A future task will finalize
+serialization and adapters, including optional MATLAB export. Legacy `.mat`
+files are not automatically assumed to follow these conventions.
