@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "base_git_commit": "c1e451bd53224c0856037ca33a786046b641ae91",
+  "policy": "Historical regression artifacts only; SHA-256 checks do not validate physical accuracy.",
+  "artifacts": [
+    {
+      "path": "tests/fixtures/golden_inertia.json",
+      "sha256": "6e9cdbafa8d7f96891454eb2fd2e3da2b34caa3a6838c22eea9b1631a6e66c5a",
+      "size_bytes": 16666
+    },
+    {
+      "path": "legacy/MOI_model_current_profile_only_export_matlab_with_forces_FIXED.ipynb",
+      "sha256": "025efbce454d8990d7ef56c16c51b2806aa2a36ec6ff186794077dfbaeac039b",
+      "size_bytes": 69443
+    },
+    {
+      "path": "legacy/Tether_Numerical_Solver-6.ipynb",
+      "sha256": "b2428f7b713a3f8677f74201242b5a0b0aca8fee0d9a889ce60824766bbb0ebb",
+      "size_bytes": 185642
+    },
+    {
+      "path": "legacy/runs/run01/MOI_model_current_profile_only_export_matlab_with_forces_FIXED_executed.ipynb",
+      "sha256": "3a50c51c1da17b48bc319f22cec78c5fe67dac3d57e5a14d97d9057159772bff",
+      "size_bytes": 76430
+    },
+    {
+      "path": "legacy/runs/run01/console_outputs.txt",
+      "sha256": "e77a015f124fa330bea1f654f92be43a6a11e9d898ac87f9c1c6e43733592d90",
+      "size_bytes": 4387
+    },
+    {
+      "path": "legacy/runs/run01/tether_nodes.mat",
+      "sha256": "62a2cc5e290402a1bfcd33b748280a9ae46369dd20a89ba813ef737d91075dbd",
+      "size_bytes": 22480
+    }
+  ]
+}
