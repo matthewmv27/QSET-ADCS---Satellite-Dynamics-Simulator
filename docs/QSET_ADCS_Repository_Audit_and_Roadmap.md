@@ -1,10 +1,8 @@
-# QSET ADCS — Repository Audit and Implementation Roadmap
-
-**Source:** user-supplied ZIP `QSET-ADCS---Satellite-Dynamics-Simulator copy.zip` (audited October 30, 2026).  
+# QSET ADCS — Repository Audit 
 **Review scope:** 34 project-owned files retained after excluding installed `.venv` dependencies, `.git` metadata, OS resource forks and caches. Three notebooks were reviewed, including the archived executed duplicate.  
 **Execution:** `PYTHONPATH=src python -m pytest -q` **73 passed**; `PYTHONPATH=src python examples/inertia_quickstart.py` successful. SciPy, NumPy, matplotlib and pytest available; Astropy and wmm-calculator unavailable here. Accordingly, full environment-dependent notebook reproduction was not attempted. Saved executed notebook, console output, and `.mat` output were inspected.
 
-## Executive recommendation
+## Moving Forward
 
 **Keep the existing `src/edtsim` package and separate models into independently validated subsystems. Prioritize correcting the tether mechanics and standardizing physical interfaces before two-way electrodynamic coupling.** Implement attitude dynamics after validated mass properties rather than waiting for tether visualization. Add mechanically coupled bus/tether dynamics with electrical current disabled, then introduce electrodynamics, then orbital-deorbit studies if required.
 
@@ -113,30 +111,8 @@ Golden inertia fixture refers to notebook `MOI_model_current_profile_only__1_.ip
 
 **Results:** retain `t`, `x_bus`, `v_bus`, `q_IB`, `omega_B`, `r_nodes`, `v_nodes`, `segment_tension`, `attachment_force`, `I_seg`, `B`, `fL_seg`, optional `I_inertia`, solver diagnostics and `meta` (source commit, SI units, frames, epoch, physical model, numerical tolerances, mission config). If `.npz` plus JSON metadata is chosen, provide a MATLAB export adapter.
 
-## Proposed package structure
 
-```text
-src/edtsim/
-  core/                 # Existing: frames, rotations, params, constants, result interfaces
-  inertia/              # Existing: components, aggregation, configurations, validation
-  attitude/             # New: quaternions, rigid_body, torques
-  environment/          # New: orbit + ECI/ECEF, geomagnetic field, plasma interface/cache
-  edt_current/          # New: OML shooting and optional electrical power accounting
-  tether/               # New: elements, forces, quasi_static, transient, integration
-  coupling/             # New: mechanical attachment and full coupled solver
-  viz/                  # New: plotting and animation from saved histories
-configs/                # Canonical mass inventory, orbit and mission scenarios
-examples/               # Independent runnable use cases for each subsystem
-scripts/                # Data migration, benchmark and fixture generation
-tests/                  # Unit, regression, validation, integration and performance
-legacy/                 # Immutable notebooks and documented reference runs
-docs/                   # Physics assumptions, interfaces, validation and workflow
-.github/workflows/      # CI
-```
-
-`environment` and `edt_current` should not be imported from `tether`; the tether should receive their already evaluated arrays/functions. `coupling` orchestrates all the subsystems. Update `tests/test_architecture.py` before adding any new subpackage so dependency rules remain explicit and useful.
-
-## Full implementation roadmap (ordered by dependency)
+## Revised implementation roadmap (ordered by dependency)
 
 ### Milestone M0 — Freeze, reproduce and audit (first PR)
 
@@ -272,13 +248,3 @@ Create **one GitHub Project** with columns `Backlog`, `Ready`, `In Progress`, `I
 - Converting saved results to/from MATLAB retains time, units, frames and force sign.
 - If orbit/deorbit stage enabled: orbital energy response agrees in sign with work done by the applied external force.
 
-## Immediate owner actions / required mission inputs
-
-Confirm: satellite bus mass inventory (and what 'bus mass' includes), spool housing vs wound cable mass, tether deployed length and cable cross-section (cylindrical vs tape), conductivity, stiffness/damping measurements or justified estimates, attachment position and cathode location, end-mass design, deployment state definitions, orbit and UTC epoch, plasma density model, and whether required output is attitude disturbance, full deployment dynamics, or quantitative deorbit time. These are **not** derivable from source and must not be guessed.
-
-## What this audit did *not* prove
-
-- The package's current 73 tests do not exercise actual tether, WMM, OML or 6DOF coupling physics.
-- The notebook's WMM / astropy calculation could not be rerun without optional packages; existing run01 artifacts prove *a prior execution occurred*, not that its coordinate transforms or field models were independently validated.
-- Saved results do not establish actual spacecraft behavior; they are a single illustrative numerical run with artificial dynamic mass scaling and an apparent collapse.
-- No full dynamics module was added or modified during this audit, and no test failure was introduced into the user's source.
