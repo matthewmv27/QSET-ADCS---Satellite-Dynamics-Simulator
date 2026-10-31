@@ -26,3 +26,13 @@ __all__ = [
     "sample_point_in_annular_cylinder",
     "is_physical_inertia", "principal_moments",
 ]
+
+from edtsim.inertia.mission import (
+    MassComponent, WoundTetherGeometry, MissionMassModel,
+    AssemblyMassResult, assemble_mass_properties,
+)
+
+__all__ += [
+    "MassComponent", "WoundTetherGeometry", "MissionMassModel",
+    "AssemblyMassResult", "assemble_mass_properties",
+]
