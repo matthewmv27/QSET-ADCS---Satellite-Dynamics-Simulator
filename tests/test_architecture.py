@@ -14,6 +14,8 @@ ALLOWED = {
     "edt_current": {"core"},
     "tether": {"core", "inertia"},
     "viz": {"core"},
+    "attitude": {"core"},
+    "coupling": {"core", "inertia", "environment", "edt_current", "tether", "attitude"},
     "coupled": {"core", "inertia", "environment", "edt_current", "tether"},
 }
 
