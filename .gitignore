@@ -224,3 +224,6 @@ __marimo__/
 !tests/fixtures/*.mat
 !legacy/runs/**/*.mat
 .DS_Store
+
+# Generated M2 sweep results (keep reproducible configs under configs/)
+/results/

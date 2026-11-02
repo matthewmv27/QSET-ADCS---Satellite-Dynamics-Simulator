@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "id": "m2_illustrative",
+  "description": "Analytical demonstration inputs only; NOT QSET mission values",
+  "revision": "example-v1",
+  "provenance": {
+    "status": "illustrative",
+    "source": "Standalone mathematical examples from M2 quickstart; not measured or CAD-derived",
+    "revision": "example-v1"
+  },
+  "parameter_provenance": {
+    "tether.length_m": {
+      "status": "illustrative",
+      "source": "Selected for showing length sensitivity; not a mission baseline",
+      "revision": "example-v1"
+    }
+  },
+  "model": {
+    "bus": {
+      "mass_kg": 4.0,
+      "dimensions_m": [
+        0.1,
+        0.1,
+        0.3
+      ]
+    },
+    "spool_hardware": {
+      "mass_kg": 0.1,
+      "com_B_m": [
+        0,
+        0,
+        0.12
+      ],
+      "inertia_com_B_kgm2": [
+        [
+          0.0001,
+          0,
+          0
+        ],
+        [
+          0,
+          0.0001,
+          0
+        ],
+        [
+          0,
+          0,
+          5e-05
+        ]
+      ]
+    },
+    "tether": {
+      "length_m": 10.0,
+      "linear_density_kg_per_m": 0.05,
+      "attach_B_m": [
+        0,
+        0,
+        -0.15
+      ]
+    },
+    "end_mass": {
+      "mass_kg": 0.15,
+      "stowed_B_m": [
+        0.02,
+        0.01,
+        0.13
+      ]
+    },
+    "wound_geometry": {
+      "r_inner_m": 0.015,
+      "r_outer_m": 0.04,
+      "width_m": 0.06,
+      "axis_B": [
+        0,
+        0,
+        1
+      ],
+      "com_B_m": [
+        0,
+        0,
+        0.12
+      ]
+    },
+    "other_fixed": []
+  },
+  "sweeps": [
+    {
+      "id": "deployment_fraction",
+      "kind": "deployment",
+      "fractions": [
+        0,
+        0.25,
+        0.5,
+        0.75,
+        1
+      ],
+      "direction_B": [
+        0,
+        0,
+        -1
+      ]
+    },
+    {
+      "id": "design_comparison",
+      "kind": "design_grid",
+      "axes": {
+        "tether.length_m": [
+          5,
+          10
+        ],
+        "end_mass.mass_kg": [
+          0.1,
+          0.2
+        ]
+      },
+      "fractions": [
+        0,
+        0.5,
+        1
+      ],
+      "direction_B": [
+        0,
+        0,
+        -1
+      ],
+      "provenance": {
+        "status": "illustrative",
+        "source": "Design options selected solely to demonstrate sensitivity; not mission hardware",
+        "revision": "example-v1"
+      }
+    },
+    {
+      "id": "bent_snapshots",
+      "kind": "bent_cases",
+      "cases": [
+        {
+          "id": "bent_A",
+          "fraction": 1,
+          "nodes_B_m": [
+            [
+              0,
+              0,
+              -0.15
+            ],
+            [
+              3,
+              0,
+              -4.15
+            ],
+            [
+              0,
+              0,
+              -8.15
+            ]
+          ],
+          "reference_lengths_m": [
+            5,
+            5
+          ]
+        }
+      ],
+      "provenance": {
+        "status": "illustrative",
+        "source": "Prescribed geometry selected to validate bent geometry path; not physically propagated",
+        "revision": "example-v1"
+      }
+    }
+  ]
+}
