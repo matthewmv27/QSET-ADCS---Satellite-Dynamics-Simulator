@@ -11,7 +11,9 @@ requires-python = ">=3.9"
 dependencies = ["numpy>=1.22"]
 
 [project.optional-dependencies]
-# Stage 3: lumped-mass tether solver and OML current profile
+# M3: standalone rigid-body dynamics
+dynamics = ["scipy>=1.9"]
+# Later stages: lumped-mass tether solver and OML current profile
 tether = ["scipy>=1.9"]
 # Stage 2: geomagnetic field + ECI<->ECEF transforms (heavy; only needed to *generate* environment tables)
 environment = ["astropy>=5.0", "wmm-calculator"]
