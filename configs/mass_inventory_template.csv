@@ -1,0 +1,5 @@
+component,category,mass_kg,com_x_B_m,com_y_B_m,com_z_B_m,Ixx_COM_B_kgm2,Iyy_COM_B_kgm2,Izz_COM_B_kgm2,Ixy_COM_B_kgm2,Ixz_COM_B_kgm2,Iyz_COM_B_kgm2,source_or_revision,notes
+bus,bus_dry,,,,,,,,,,,"","Exclude tether, end mass, and separate spool hardware"
+spool_hardware,spool_fixed,,,,,,,,,,,"","Includes reel/core/supports; excludes wound tether material"
+tether,tether_material,,,,,,,,,,,"","Also supply total length and winding geometry separately"
+end_mass,tip_mass,,,,,,,,,,,"","Also supply stowed location and connection geometry"
