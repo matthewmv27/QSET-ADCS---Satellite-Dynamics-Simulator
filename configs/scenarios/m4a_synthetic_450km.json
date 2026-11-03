@@ -1,0 +1,21 @@
+{
+  "schema_version": "m4a-synthetic-v1",
+  "provenance": {
+    "status": "illustrative",
+    "revision": "1",
+    "description": "Synthetic field and corotation only; NOT a QSET flight orbit or WMM result."
+  },
+  "orbit": {
+    "altitude_m": 450000,
+    "inclination_mode": "sso_j2_approx",
+    "raan_deg": 0.0,
+    "argument_latitude_deg": 0.0,
+    "precess_raan": true
+  },
+  "magnetic_field": {
+    "model": "synthetic_uniform",
+    "B_I_T": [0.0, 0.0, 0.00003]
+  },
+  "flow": {"model": "assumed_earth_corotation"},
+  "output": {"duration_s": 600, "step_s": 60}
+}
