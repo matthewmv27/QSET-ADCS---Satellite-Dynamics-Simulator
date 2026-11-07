@@ -47,7 +47,7 @@ There are **two distinct deliverables**: (1) mass properties of fixed configurat
 | `legacy/runs/run01/console_outputs.txt` | Full parameter log for a 30-second example: 4 kg bus, 10 m / 0.1 kg tether, 0.2 kg end mass, five segments, 400 km circular orbit, 50 V bias, 10 V cathode, mass_scale=6.33, BDF integrator. |
 | `legacy/runs/run01/tether_nodes.mat` | Saved 61 time steps, `(61,6,3)` node positions, `(61,5,3)` Lorentz forces, segment currents, orbit and magnetic field. **Quantitative finding:** tether tip-to-attachment separation falls from 10 m to 0.001662 m in 30 s. See critical findings below. |
 
-## Critical findings, ranked
+## Problems
 
 ### P0 — The saved tether simulation physically collapses
 
