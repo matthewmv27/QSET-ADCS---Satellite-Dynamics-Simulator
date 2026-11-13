@@ -1,0 +1,59 @@
+{
+  "id": "m4_500km_illustrative_radial_tether",
+  "provenance": {
+    "status": "illustrative",
+    "source": "M4 physics/CI demonstration; not flight design data",
+    "revision": "1"
+  },
+  "orbit": {
+    "initial_altitude_m": 500000,
+    "inclination": "first_order_sso",
+    "raan_deg": 0,
+    "argument_latitude_deg": 0
+  },
+  "vehicle": {
+    "dry_mass_kg": 4.0,
+    "bus_projected_area_m2": 0.03,
+    "bus_Cd": 2.2,
+    "tether_Cd": 2.2
+  },
+  "tether": {
+    "length_m": 100,
+    "cross_section": {
+      "type": "round",
+      "diameter_m": 0.0005
+    },
+    "density_kg_m3": 2700,
+    "young_modulus_Pa": 70000000000,
+    "conductivity_S_m": 35000000,
+    "bare_fraction": 1.0
+  },
+  "magnetic_field": {
+    "type": "centered_dipole",
+    "equatorial_field_T": 0.0000312,
+    "dipole_axis_I_at_t0": [0.0, 0.0, -1.0],
+    "spin_rad_s": 0.00007292115
+  },
+  "atmosphere": {
+    "type": "exponential",
+    "reference_altitude_m": 500000,
+    "reference_density_kg_m3": 2e-12,
+    "scale_height_m": 70000,
+    "min_altitude_m": 250000,
+    "max_altitude_m": 800000
+  },
+  "assumed_current": {
+    "magnitude_A": 0.0025,
+    "sign_convention": "positive conventional current CubeSat (s=0) to zenith tip (s=L)"
+  },
+  "cathode_estimate": {
+    "bias_voltage_V": 248,
+    "equivalent_age_h": 0
+  },
+  "integration": {
+    "orbits": 2,
+    "samples": 181,
+    "segments": 10
+  },
+  "runs": ["off", "outward_always", "inward_always", "outward_braking_only"]
+}
