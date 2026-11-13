@@ -1,0 +1,20 @@
+{
+  "id": "m4_geometry_illustrative",
+  "provenance": {
+    "status": "illustrative",
+    "source": "No approved QSET tether design or material budget yet",
+    "revision": "1"
+  },
+  "material": {
+    "density_kg_m3": 2700,
+    "young_modulus_Pa": 70000000000,
+    "conductivity_S_m": 35000000,
+    "bare_fraction": 1.0
+  },
+  "lengths_m": [20, 100, 200],
+  "candidates": [
+    {"id": "wire_0p3mm", "type": "round", "diameter_m": 0.0003},
+    {"id": "wire_0p5mm", "type": "round", "diameter_m": 0.0005},
+    {"id": "tape_10mm_50um", "type": "tape", "width_m": 0.01, "thickness_m": 0.00005}
+  ]
+}

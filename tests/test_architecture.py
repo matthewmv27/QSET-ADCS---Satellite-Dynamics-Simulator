@@ -12,6 +12,8 @@ ALLOWED = {
     "inertia": {"core"},
     "environment": {"core"},
     "edt_current": {"core"},
+    "electrodynamics": set(),
+    "orbit_dynamics": {"core", "environment", "tether", "electrodynamics"},
     "tether": {"core", "inertia"},
     "viz": {"core"},
     "attitude": {"core"},
