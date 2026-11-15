@@ -17,6 +17,8 @@ dynamics = ["scipy>=1.9"]
 tether = ["scipy>=1.9"]
 # Stage 2: geomagnetic field + ECI<->ECEF transforms (heavy; only needed to *generate* environment tables)
 environment = ["astropy>=5.0", "wmm-calculator"]
+# Optional verified model adapters, used only when requested
+earth-models = ["astropy>=5.0", "ppigrf>=2.0", "wmm-calculator", "pymsis>=0.11", "pandas>=1.3"]
 # Stage 4: plotting / animation
 viz = ["matplotlib>=3.5"]
 dev = ["pytest>=7"]

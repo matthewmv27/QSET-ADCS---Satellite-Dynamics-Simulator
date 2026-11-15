@@ -1,0 +1,21 @@
+name: Earth-model optional integration checks
+
+on:
+  workflow_dispatch:
+
+jobs:
+  real-earth-model-smoke:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install optional Earth model packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,dynamics,earth-models]"
+      - name: Verify all optional dependencies are importable
+        run: python -c "import astropy, ppigrf, pymsis, wmm"
+      - name: Real coefficient and atmosphere-model smoke tests
+        run: python -m pytest tests/test_m4_optional_model_integration.py -v -rs

@@ -12,3 +12,9 @@ __all__ = [
     "corotating_flow_I", "motional_electric_field_I",
     "segment_lorentz_force_I", "aerodynamic_drag_force_I",
 ]
+
+# Higher-fidelity providers have optional dependencies, imported only on use.
+from .epoch_frames import EarthFrame, utc_datetime
+from .earth_models import GeomagneticMainField, MSIS2AtmosphericDensity
+from .orbit_sweeps import (make_orbit_cases, solar_times_from_raan,
+                           raan_from_solar_time, sun_ra_deg)

@@ -3,3 +3,5 @@ from .current import ZeroCurrent, PrescribedConstantCurrent
 from .cnt_cathode import EmpiricalCNTCathode
 
 __all__ = ['ZeroCurrent', 'PrescribedConstantCurrent', 'EmpiricalCNTCathode']
+
+from .oml_collection import ThinCollectorOMLEnvelope

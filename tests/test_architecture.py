@@ -12,7 +12,7 @@ ALLOWED = {
     "inertia": {"core"},
     "environment": {"core"},
     "edt_current": {"core"},
-    "electrodynamics": set(),
+    "electrodynamics": {"tether"},  # M4: collector geometry supplied by tether package
     "orbit_dynamics": {"core", "environment", "tether", "electrodynamics"},
     "tether": {"core", "inertia"},
     "viz": {"core"},
