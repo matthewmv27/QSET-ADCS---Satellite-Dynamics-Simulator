@@ -1,0 +1,85 @@
+{
+  "id": "m4_epochs_500km_preliminary",
+  "provenance": {
+    "status": "illustrative",
+    "revision": "1",
+    "notes": "Not flight mission values; assumed constant signed current, not CNT circuit closure"
+  },
+  "orbit_sweep": {
+    "epochs_utc": [
+      "2026-11-15T12:00:00Z",
+      "2027-06-21T12:00:00Z"
+    ],
+    "altitudes_m": [
+      500000
+    ],
+    "inclinations": [
+      "sso",
+      97.5
+    ],
+    "plane_sweeps": [
+      {
+        "type": "ltan_hours",
+        "values": [
+          6,
+          10.5
+        ]
+      },
+      {
+        "type": "raan_deg",
+        "values": [
+          0,
+          90
+        ]
+      },
+      {
+        "type": "ltdn_hours",
+        "values": [
+          18
+        ]
+      }
+    ]
+  },
+  "environment": {
+    "magnetic_model": "igrf14",
+    "solar_activity_cases": [
+      {
+        "label": "low_activity",
+        "f107": 75,
+        "f107a": 80,
+        "ap": 4
+      },
+      {
+        "label": "higher_activity",
+        "f107": 180,
+        "f107a": 160,
+        "ap": 20
+      }
+    ]
+  },
+  "vehicle": {
+    "dry_mass_kg": 4,
+    "bus_projected_area_m2": 0.03,
+    "bus_Cd": 2.2,
+    "tether_Cd": 2.2
+  },
+  "tether": {
+    "length_m": 100,
+    "cross_section": {
+      "type": "round",
+      "diameter_m": 0.0005
+    },
+    "density_kg_m3": 2700,
+    "young_modulus_Pa": 70000000000,
+    "conductivity_S_m": 35000000,
+    "bare_fraction": 1
+  },
+  "current": {
+    "assumed_uniform_A": 0.0025
+  },
+  "sampling": {
+    "steps_per_orbit": 12,
+    "segment_count": 3,
+    "orbits": 1
+  }
+}

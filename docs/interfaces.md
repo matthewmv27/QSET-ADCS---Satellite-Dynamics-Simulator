@@ -139,3 +139,13 @@ Arrays may be absent for simulations that do not include a subsystem; metadata
 must tell readers which fields are included. A future task will finalize
 serialization and adapters, including optional MATLAB export. Legacy `.mat`
 files are not automatically assumed to follow these conventions.
+
+### M4 environment/electrodynamics extension
+
+`electrodynamics.oml_collection` now imports `tether.geometry` for collecting
+cross-section properties. This is one-way (`electrodynamics` → `tether`), with
+no tether-to-electrodynamics imports; `tests/test_architecture.py` explicitly
+allows and checks the direction. New `environment.earth_models` adapters accept
+GCRS position at UTC epoch + elapsed seconds and return field in inertial Tesla
+or atmospheric mass density kg/m³. The SSO/epoch sweep keeps RAAN and LTAN
+linked instead of allowing physically contradictory independent values.

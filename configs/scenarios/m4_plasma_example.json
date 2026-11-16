@@ -1,0 +1,15 @@
+{
+  "provenance": {"status": "illustrative", "notes": "Arbitrary plasma and electrical assumptions, NOT payload measurements"},
+  "tether": {
+    "length_m": 100,
+    "cross_section": {"type": "round", "diameter_m": 0.0002},
+    "density_kg_m3": 2700,
+    "young_modulus_Pa": 70000000000,
+    "conductivity_S_m": 35000000,
+    "bare_fraction": 0.5
+  },
+  "plasma": {"electron_density_m3": 100000000000, "electron_temperature_K": 1500},
+  "electrical": {"bus_plasma_bias_V": 2, "motional_E_along_V_m": 0.05},
+  "cathode": {"equivalent_age_h": 0, "available_gate_voltage_V": 500},
+  "numerical": {"nodes": 51}
+}
