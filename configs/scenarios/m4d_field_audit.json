@@ -1,0 +1,14 @@
+{
+  "epoch_utc": "2026-11-15T12:00:00Z",
+  "altitude_m": 500000,
+  "inclination_deg": "sso",
+  "raan_deg": 0.0,
+  "argument_latitude_deg": 0.0,
+  "orbits": 1.0,
+  "samples_per_orbit": 81,
+  "tether_length_m": 100.0,
+  "segments": 20,
+  "outward_current_A": 0.0025,
+  "field_model": "centered_dipole",
+  "plasma_flow": "corotation_approximation"
+}

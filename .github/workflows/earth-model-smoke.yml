@@ -19,3 +19,5 @@ jobs:
         run: python -c "import astropy, ppigrf, pymsis, wmm"
       - name: Real coefficient and atmosphere-model smoke tests
         run: python -m pytest tests/test_m4_optional_model_integration.py -v -rs
+      - name: M4d NOAA WMM signed-component and Lorentz sign validation
+        run: python -m pytest tests/test_m4d_field_force_validation.py -v -rs
