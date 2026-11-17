@@ -1,4 +1,4 @@
-# M2 — Configuration-dependent assembly mass properties
+# M2a — Configuration-dependent assembly mass properties
 
 **Status:** initial tested implementation; hardware-specific values **not** validated.
 This module creates static assembly mass-property snapshots in the M1 body
