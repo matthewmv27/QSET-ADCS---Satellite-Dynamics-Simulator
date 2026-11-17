@@ -1,4 +1,4 @@
-# M2 extension — Parameter sweeps and versioned input configurations
+# M2b extension — Parameter sweeps and versioned input configurations
 
 **Scope:** static mass-property snapshots using the already-tested `MissionMassModel`.
 These results are **not** deployment trajectories, dynamic forces, aerodynamic
