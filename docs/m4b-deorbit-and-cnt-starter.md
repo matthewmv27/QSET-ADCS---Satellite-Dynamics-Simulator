@@ -1,4 +1,4 @@
-# M4 extension — preliminary 500 km orbital work, CNT emitter, tether design
+# M4b extension — preliminary 500 km orbital work, CNT emitter, tether design
 
 ## Scope and provenance
 
