@@ -12,7 +12,7 @@ ALLOWED = {
     "inertia": {"core"},
     "environment": {"core"},
     "edt_current": {"core"},
-    "electrodynamics": {"tether"},  # M4: collector geometry supplied by tether package
+    "electrodynamics": {"core", "environment", "tether"},  # M4e: source loading consumes environment + tether geometry
     "orbit_dynamics": {"core", "environment", "tether", "electrodynamics"},
     "tether": {"core", "inertia"},
     "viz": {"core"},
