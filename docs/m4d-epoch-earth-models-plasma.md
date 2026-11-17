@@ -1,4 +1,4 @@
-# M4 — Epoch sweeps, real geomagnetic/atmosphere adapters, and OML collection
+# M4d — Epoch sweeps, real geomagnetic/atmosphere adapters, and OML collection
 
 **Status:** Preliminary. This increment does not close the CNT–tether–plasma electrical circuit and does not validate a flight deorbit prediction. It is designed around the **500 km** preliminary LEO-SSO reference and accepts sweepable epochs, inclinations, RAAN, LTAN/LTDN, and solar-activity inputs.
 
