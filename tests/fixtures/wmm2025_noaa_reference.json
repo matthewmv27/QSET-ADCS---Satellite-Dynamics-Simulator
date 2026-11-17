@@ -1,0 +1,13 @@
+{
+  "source": "NOAA NCEI WMM2025 Test Values (X north, Y east, Z down, nT)",
+  "url": "https://www.ncei.noaa.gov/sites/g/files/anmtlf171/files/2025-02/WMM2025testvalues.pdf",
+  "notes": "Published values rounded to 0.1 nT; geodetic latitude and WGS84 ellipsoidal altitude. These are 2025.0 cases, not 500-km mission predictions.",
+  "cases": [
+    {"year": 2025, "latitude_deg": 80, "longitude_deg": 0, "altitude_km": 0, "north_nT": 6521.6, "east_nT": 145.9, "down_nT": 54791.5},
+    {"year": 2025, "latitude_deg": 0, "longitude_deg": 120, "altitude_km": 0, "north_nT": 39677.8, "east_nT": -109.6, "down_nT": -10580.2},
+    {"year": 2025, "latitude_deg": -80, "longitude_deg": 240, "altitude_km": 0, "north_nT": 6117.5, "east_nT": 15751.9, "down_nT": -52022.5},
+    {"year": 2025, "latitude_deg": 80, "longitude_deg": 0, "altitude_km": 100, "north_nT": 6216.0, "east_nT": 92.4, "down_nT": 52598.8},
+    {"year": 2025, "latitude_deg": 0, "longitude_deg": 120, "altitude_km": 100, "north_nT": 37688.6, "east_nT": -96.2, "down_nT": -10152.1},
+    {"year": 2025, "latitude_deg": -80, "longitude_deg": 240, "altitude_km": 100, "north_nT": 5907.6, "east_nT": 14780.3, "down_nT": -49540.7}
+  ]
+}
