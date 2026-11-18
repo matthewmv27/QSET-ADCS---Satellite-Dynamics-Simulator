@@ -1,0 +1,66 @@
+{
+  "mode": "transient",
+  "provenance": "illustrative_50m_100seg_soft_cable_NOT_QSET_hardware",
+  "tether": {
+    "cross_section": {
+      "type": "round",
+      "diameter_m": 0.004
+    },
+    "length_m": 50.0,
+    "density_kg_m3": 1000.0,
+    "young_modulus_Pa": 100000.0,
+    "conductivity_S_m": 10000000.0,
+    "bare_fraction": 1.0
+  },
+  "mechanics": {
+    "segments": 100,
+    "end_mass_kg": 0.05,
+    "viscous_axial_rigidity_Ns": 0.02
+  },
+  "initial": {
+    "direction_I": [
+      1,
+      0,
+      0
+    ],
+    "extension_fraction": 0.01,
+    "midpoint_bow_I_m": [
+      0.0,
+      0.4,
+      0.0
+    ]
+  },
+  "attachment": {
+    "position_I_m": [
+      0,
+      0,
+      0
+    ],
+    "velocity_I_m_s": [
+      0,
+      0,
+      0
+    ],
+    "acceleration_I_m_s2": [
+      0,
+      0,
+      0
+    ]
+  },
+  "environment": {
+    "gravity_I_m_s2": [
+      0,
+      0,
+      0
+    ],
+    "current_A": 0.0
+  },
+  "integration": {
+    "duration_s": 5.0,
+    "samples": 201,
+    "method": "DOP853",
+    "rtol": 1e-08,
+    "atol": 1e-10,
+    "max_step_s": 0.025
+  }
+}

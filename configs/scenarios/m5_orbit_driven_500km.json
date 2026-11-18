@@ -1,0 +1,41 @@
+{
+  "milestone": "M5",
+  "mode": "prescribed_circular_orbit_tether",
+  "provenance": "illustrative_50m_soft_cable_and_synthetic_field_NOT_QSET_flight_parameters",
+  "tether": {
+    "cross_section": {"type": "round", "diameter_m": 0.004},
+    "length_m": 50.0,
+    "density_kg_m3": 1000.0,
+    "young_modulus_Pa": 100000.0,
+    "conductivity_S_m": 10000000.0,
+    "bare_fraction": 1.0
+  },
+  "mechanics": {
+    "segments": 100,
+    "end_mass_kg": 0.05,
+    "viscous_axial_rigidity_Ns": 0.02
+  },
+  "orbit": {
+    "altitude_m": 500000.0,
+    "inclination_deg": "sso",
+    "raan_deg": 0.0,
+    "argument_latitude_deg": 0.0,
+    "precess_raan": false
+  },
+  "initial": {
+    "extension_fraction": 0.0,
+    "libration_perturbation_deg": 2.0
+  },
+  "electrodynamics": {
+    "assumed_signed_uniform_current_A": 0.0025,
+    "synthetic_field_orbit_normal_T": 0.00003
+  },
+  "integration": {
+    "duration_s": 30.0,
+    "samples": 121,
+    "method": "DOP853",
+    "rtol": 1e-8,
+    "atol": 1e-10,
+    "max_step_s": 0.2
+  }
+}
